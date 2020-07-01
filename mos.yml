@@ -1,0 +1,20 @@
+author: ZenDIY
+type: lib
+description: Mongoose OS library for GPIO-enabled ZenButtons
+version: 1.0
+
+sources:
+  - src
+includes:
+  - include
+filesystem:
+  - fs
+config_schema:
+libs:
+  - origin: https://github.com/zendiy-mgos/zbutton
+
+tags:
+  - c
+  - docs:misc:ZenButton GPIO
+
+manifest_version: 2017-09-29
