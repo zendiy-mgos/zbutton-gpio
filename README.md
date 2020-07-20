@@ -75,8 +75,8 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 **GPIO configuration properties**
 |Property|Type||
 |--|--|--|
-|*cfg*.activeHigh|boolean|Optional. `true` if switch is ON when GPIO output is high (1).|
-|*cfg*.debounceTicks|numeric|Optional. Debounce interval in milliseconds.|
+|*cfg*.activeHigh|boolean|Optional. `true` if switch is ON when GPIO output is high (1). Default value `true`.|
+|*cfg*.debounceTicks|numeric|Optional. Debounce interval in milliseconds. Default value `50ms`.|
 
 **Example** - Create a button using default configuration values and attach it to the GPIO 14.
 ```js
