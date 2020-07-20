@@ -28,6 +28,7 @@ ZenButton.GPIO = {
           ZenThing._getSafe(cfg.activeHigh, true),
           ZenThing._getSafe(cfg.debounceTicks, -1)
         );
+        if (cfgo == null) return null;
       }
       let result = ZenButton.GPIO._att(this._getHandle(), pin, cfgo);
       ZenThing._free(cfgo);

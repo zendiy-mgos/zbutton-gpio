@@ -24,16 +24,28 @@ struct mg_zbutton_gpio_ctx {
 /* Excecution context instance */
 static struct mg_zbutton_gpio_ctx *s_context = NULL;
 
+bool mg_zbutton_gpio_cfg_set(struct mgos_zbutton_gpio_cfg *cfg_src,
+                             struct mgos_zbutton_gpio_cfg *cfg_dest) {
+  if (!cfg_dest) return false;
+  if (cfg_src != NULL) {
+    cfg_dest->active_high = cfg_src->active_high;
+    cfg_dest->debounce_ticks = (cfg_src->debounce_ticks == -1 ? MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS : cfg_src->debounce_ticks);
+  } else {
+    cfg_dest->active_high = true;
+    cfg_dest->debounce_ticks = MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS;
+  }
+  return true;
+}
 
 void mg_zbutton_gpio_button_handler_cb(int pin, void *arg) {
   struct mg_zbutton_gpio_entry *entry = (struct mg_zbutton_gpio_entry *)arg;
   bool gpio_val = mgos_gpio_read(pin);  
   if (entry->cfg.active_high) {
-    LOG(LL_DEBUG, ("Triggering button %s on pin %d.", gpio_val ? "DOWN" : "UP", pin));
     mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_DOWN : MGOS_EV_ZBUTTON_UP, entry->handle);
+    LOG(LL_DEBUG, ("Triggering button %s on pin %d ('%s').", gpio_val ? "DOWN" : "UP", pin, entry->handle->id));
   } else {
-    LOG(LL_DEBUG, ("Triggering button %s on pin %d.", gpio_val ? "UP" : "DOWM", pin));
     mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_UP : MGOS_EV_ZBUTTON_DOWN, entry->handle);
+    LOG(LL_DEBUG, ("Triggering button %s on pin %d ('%s').", gpio_val ? "UP" : "DOWM", pin, entry->handle->id));
   }
 }
 
@@ -76,11 +88,9 @@ bool mgos_zbutton_gpio_attach(struct mgos_zbutton *handle, int pin,
     sizeof(struct mg_zbutton_gpio_entry));
   if (e != NULL) {
     e->handle = handle;
-    e->cfg.active_high = (cfg == NULL ? true : cfg->active_high);
-    e->cfg.debounce_ticks = (cfg == NULL ? MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS : cfg->debounce_ticks);
     e->pin = pin;
     
-    if (mg_zbutton_gpio_entry_set(e)) {
+    if (mg_zbutton_gpio_cfg_set(cfg, &e->cfg) && mg_zbutton_gpio_entry_set(e)) {
       SLIST_INSERT_HEAD(&s_context->entries, e, entry);
       LOG(LL_INFO, ("Button '%s' successfully attacched to GPIO pin %d.",
         e->handle->id, e->pin));
@@ -107,11 +117,14 @@ bool mgos_zbutton_gpio_detach(struct mgos_zbutton *handle) {
 
 struct mgos_zbutton_gpio_cfg *mjs_zbutton_gpio_cfg_create(bool active_high,
                                                           int debounce_ticks) {
-  struct mgos_zbutton_gpio_cfg *cfg = calloc(1,
-    sizeof(struct mgos_zbutton_gpio_cfg));
-  cfg->active_high = active_high;
-  cfg->debounce_ticks = (debounce_ticks < 0 ? MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS : debounce_ticks); 
-  return cfg;
+  struct mgos_zbutton_gpio_cfg cfg_src = {
+    active_high,
+    debounce_ticks
+  };
+  struct mgos_zbutton_gpio_cfg *cfg_dest = calloc(1, sizeof(struct mgos_zbutton_gpio_cfg));
+  if (mg_zbutton_gpio_cfg_set(&cfg_src, cfg_dest)) return cfg_dest;
+  free(cfg_dest);
+  return NULL;
 }
 
 #endif /* MGOS_HAVE_MJS */
