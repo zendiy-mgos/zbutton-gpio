@@ -29,7 +29,7 @@ GPIO configuration settings (e.g.: used by `mgos_zbutton_gpio_attach()`).
 
 |Field||
 |--|--|
-|active_high|`true` if the GPIO input is high (1) when the button is pressed.|
+|active_high|Set to `true` if the GPIO input is high (1) when the button is pressed.|
 |debounce_ticks|Debounce interval in milliseconds. Set to -1 or to MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS to use the default interval (50ms).|
 ### mgos_zbutton_gpio_attach()
 ```c
@@ -70,13 +70,19 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |Parameter|Type||
 |--|--|--|
 |pin|numeric|GPIO pin.|
-|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used.|
+|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used. For more details see *'GPIO configuration properties'* below.|
 
 **GPIO configuration properties**
+```js
+{
+  activeHigh: true,
+  debounceTicks: 50
+}
+```
 |Property|Type||
 |--|--|--|
-|*cfg*.activeHigh|boolean|Optional. `true` if switch is ON when GPIO output is high (1). Default value `true`.|
-|*cfg*.debounceTicks|numeric|Optional. Debounce interval in milliseconds. Default value 50ms.|
+|activeHigh|boolean|Optional. Set to `true` if the GPIO input is high (1) when the button is pressed. Default value `true`.|
+|debounceTicks|numeric|Optional. Debounce interval in milliseconds. Default value 50ms.|
 
 **Example** - Create a button using default configuration values and attach it to the GPIO 14.
 ```js
