@@ -1,6 +1,6 @@
 author: ZenDIY
 type: lib
-description: Mongoose-OS library for GPIO-enabled ZenButtons
+description: Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons
 version: 1.0
 
 sources:
