@@ -1,12 +1,12 @@
 # ZenButton GPIO
 ## Overview
-Mongoose-OS-library for GPIO-enabled ZenButtons.
+Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
 
 |Sample|Notes|
 |--|--|
-|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Mongoose-OS demo firmware for publishing ZenButtons events as MQTT messages.|
+|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
 ## Usage
 Include the library into your `mos.yml` file.
 ```yaml
@@ -99,4 +99,4 @@ Take a look to some other samples or libraries.
 
 |Reference|Type||
 |--|--|--|
-|[zbutton-mqtt](https://github.com/zendiy-mgos/zbutton-mqtt)|Library|A ready-to-use Mongoose-OS library for publishing ZenButtons events as MQTT messages.|
+|[zbutton-mqtt](https://github.com/zendiy-mgos/zbutton-mqtt)|Library|Mongoose-OS library for publishing ZenButtons events as MQTT messages.|
