@@ -49,7 +49,6 @@ struct mgos_button *btn = mgos_button_create("btn-1", NULL);
 // active_high    => equals to true
 // debounce_ticks => equals to MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS
 mgos_zbutton_gpio_attach(btn, 14, NULL);
-}
 ```
 ### mgos_zbutton_gpio_detach()
 ```c
