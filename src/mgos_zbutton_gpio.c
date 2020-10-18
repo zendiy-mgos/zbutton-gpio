@@ -41,10 +41,10 @@ void mg_zbutton_gpio_button_handler_cb(int pin, void *arg) {
   struct mg_zbutton_gpio_entry *entry = (struct mg_zbutton_gpio_entry *)arg;
   bool gpio_val = mgos_gpio_read(pin);  
   if (entry->cfg.active_high) {
-    mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_DOWN : MGOS_EV_ZBUTTON_UP, entry->handle);
+    mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_ON_DOWN : MGOS_EV_ZBUTTON_ON_UP, entry->handle);
     LOG(LL_DEBUG, ("Triggering button %s on pin %d ('%s').", gpio_val ? "DOWN" : "UP", pin, entry->handle->id));
   } else {
-    mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_UP : MGOS_EV_ZBUTTON_DOWN, entry->handle);
+    mgos_event_trigger(gpio_val ? MGOS_EV_ZBUTTON_ON_UP : MGOS_EV_ZBUTTON_ON_DOWN, entry->handle);
     LOG(LL_DEBUG, ("Triggering button %s on pin %d ('%s').", gpio_val ? "UP" : "DOWM", pin, entry->handle->id));
   }
 }
