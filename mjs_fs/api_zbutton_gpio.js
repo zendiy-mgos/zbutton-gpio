@@ -3,7 +3,7 @@ load('api_zbutton.js');
 ZenButton.GPIO = {
   _att: ffi('bool mgos_zbutton_gpio_attach(void *, int, void *)'),
   _det: ffi('bool mgos_zbutton_gpio_detach(void *)'),
-  _cfgc: ffi('void *mjs_zbutton_gpio_cfg_create(bool, int)'),
+  _cfgc: ffi('void *mjs_zbutton_gpio_cfg_create(bool)'),
   
   _proto: {
     _button: null,
@@ -25,8 +25,7 @@ ZenButton.GPIO = {
       let cfgo = null;
       if (cfg) {
         cfgo = ZenButton.GPIO._cfgc(
-          ZenThing._getSafe(cfg.activeHigh, true),
-          ZenThing._getSafe(cfg.debounceTicks, -1)
+          ZenThing._getSafe(cfg.activeHigh, true)
         );
         if (cfgo === null) return null;
       }

@@ -4,13 +4,9 @@
 #include "mgos_zbutton_gpio.h"
 
 
-extern int mg_zbutton_debounce_ticks_reset(struct mgos_zbutton *handle);
-extern bool mg_zbutton_debounce_ticks_set(struct mgos_zbutton *handle, int debounce_ticks);
-
 struct mg_zbutton_gpio_entry {
   struct mgos_zbutton *handle;
   int pin;
-  int btn_debounce_ticks;
   struct mgos_zbutton_gpio_cfg cfg;
   SLIST_ENTRY(mg_zbutton_gpio_entry) entry;
 };
@@ -29,10 +25,8 @@ bool mg_zbutton_gpio_cfg_set(struct mgos_zbutton_gpio_cfg *cfg_src,
   if (!cfg_dest) return false;
   if (cfg_src != NULL) {
     cfg_dest->active_high = cfg_src->active_high;
-    cfg_dest->debounce_ticks = (cfg_src->debounce_ticks == -1 ? MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS : cfg_src->debounce_ticks);
   } else {
     cfg_dest->active_high = true;
-    cfg_dest->debounce_ticks = MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS;
   }
   return true;
 }
@@ -66,9 +60,12 @@ bool mg_zbutton_gpio_entry_reset(struct mg_zbutton_gpio_entry *entry) {
 }
 
 bool mg_zbutton_gpio_entry_set(struct mg_zbutton_gpio_entry *entry) {
+  struct mgos_zbutton_cfg btn_cfg;
+  mgos_zbutton_cfg_get(entry->handle, &btn_cfg);
+
   bool success = mgos_gpio_set_button_handler(entry->pin, 
     (entry->cfg.active_high ? MGOS_GPIO_PULL_DOWN: MGOS_GPIO_PULL_UP),
-    MGOS_GPIO_INT_EDGE_ANY, entry->cfg.debounce_ticks,
+    MGOS_GPIO_INT_EDGE_ANY, btn_cfg.debounce_ticks,
     mg_zbutton_gpio_button_handler_cb, entry);
 
   if (!success) {
@@ -115,11 +112,9 @@ bool mgos_zbutton_gpio_detach(struct mgos_zbutton *handle) {
 
 #ifdef MGOS_HAVE_MJS
 
-struct mgos_zbutton_gpio_cfg *mjs_zbutton_gpio_cfg_create(bool active_high,
-                                                          int debounce_ticks) {
+struct mgos_zbutton_gpio_cfg *mjs_zbutton_gpio_cfg_create(bool active_high) {
   struct mgos_zbutton_gpio_cfg cfg_src = {
-    active_high,
-    debounce_ticks
+    active_high
   };
   struct mgos_zbutton_gpio_cfg *cfg_dest = calloc(1, sizeof(struct mgos_zbutton_gpio_cfg));
   if (mg_zbutton_gpio_cfg_set(&cfg_src, cfg_dest)) return cfg_dest;

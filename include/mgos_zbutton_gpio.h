@@ -26,12 +26,9 @@
 extern "C" {
 #endif
 
-#define MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS 50 //milliseconds
-
-#define MGOS_ZBUTTON_GPIO_CFG {true, MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS} 
+#define MGOS_ZBUTTON_GPIO_CFG {true} 
 struct mgos_zbutton_gpio_cfg {
   bool active_high;
-  int debounce_ticks;
 };
 
 bool mgos_zbutton_gpio_attach(struct mgos_zbutton *handle, int pin,

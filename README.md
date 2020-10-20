@@ -22,7 +22,6 @@ load('api_zbutton_gpio.js');
 ```c
 struct mgos_zbutton_gpio_cfg {
   bool active_high;
-  int debounce_ticks;
 };
 ```
 GPIO configuration settings (e.g.: used by `mgos_zbutton_gpio_attach()`).
@@ -30,7 +29,6 @@ GPIO configuration settings (e.g.: used by `mgos_zbutton_gpio_attach()`).
 |Field||
 |--|--|
 |active_high|Set to `true` if the GPIO input is high (1) when the button is pressed.|
-|debounce_ticks|Debounce interval in milliseconds. Set to -1 or to MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS to use the default interval (50ms).|
 ### mgos_zbutton_gpio_attach()
 ```c
 bool mgos_zbutton_gpio_attach(struct mgos_zbutton *handle, int pin, struct mgos_zbutton_gpio_cfg *cfg);
@@ -46,10 +44,7 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 **Example** - Create a button using default configuration values and attach it to the GPIO 14.
 ```c
 struct mgos_button *btn = mgos_button_create("btn-1", NULL);
-// active_high    => equals to true
-// debounce_ticks => equals to MGOS_ZBUTTON_GPIO_DEFAULT_DEBOUNCE_TICKS
 mgos_zbutton_gpio_attach(btn, 14, NULL);
-}
 ```
 ### mgos_zbutton_gpio_detach()
 ```c
@@ -75,14 +70,12 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 **GPIO configuration properties**
 ```js
 {
-  activeHigh: true,
-  debounceTicks: 50
+  activeHigh: true  //default
 }
 ```
 |Property|Type||
 |--|--|--|
 |activeHigh|boolean|Optional. Set to `true` if the GPIO input is high (1) when the button is pressed. Default value `true`.|
-|debounceTicks|numeric|Optional. Debounce interval in milliseconds. Default value 50ms.|
 
 **Example** - Create a button using default configuration values and attach it to the GPIO 14.
 ```js
