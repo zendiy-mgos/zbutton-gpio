@@ -66,7 +66,7 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |--|--|
 |handle|Button handle.|
 |pin|GPIO pin.|
-|cfg|Optional. GPIO configuration. If `NULL`, default configuration values are used.|
+|cfg|Optional. [GPIO configuration](https://github.com/zendiy-mgos/zbutton-gpio#mgos_zbutton_gpio_cfg). If `NULL`, default configuration values are used.|
 ### mgos_zbutton_gpio_detach()
 ```c
 bool mgos_zbutton_gpio_detach(struct mgos_zbutton *handle);
@@ -86,14 +86,9 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |Parameter|Type||
 |--|--|--|
 |pin|numeric|GPIO pin.|
-|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used. For more details see *'GPIO configuration properties'* below.|
+|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used.<br>```{ activeHigh: true }```|
 
 **GPIO configuration properties**
-```js
-{
-  activeHigh: true
-}
-```
 |Property|Type||
 |--|--|--|
 |activeHigh|boolean|Optional. Set to `true` if the GPIO input is high (1) when the button is pressed. Default value `true`.|
