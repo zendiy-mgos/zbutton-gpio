@@ -67,7 +67,6 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |handle|Button handle.|
 |pin|GPIO pin.|
 |cfg|Optional. GPIO configuration. If `NULL`, default configuration values are used.|
-```
 ### mgos_zbutton_gpio_detach()
 ```c
 bool mgos_zbutton_gpio_detach(struct mgos_zbutton *handle);
