@@ -1,21 +1,48 @@
 # ZenButton GPIO
 ## Overview
-Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.
+Mongoose-OS library for attaching a [ZenButton](https://github.com/zendiy-mgos/zbutton) to gpio-based pushbutton.
 ## GET STARTED
-Build up your own device in few minutes just starting from one of the following samples.
-
-|Sample|Notes|
-|--|--|
-|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
-## Usage
+Build up your own device in few minutes just starting from the following sample.
 Include the library into your `mos.yml` file.
 ```yaml
 libs:
   - origin: https://github.com/zendiy-mgos/zbutton-gpio
 ```
-If you are developing a JavaScript firmware, load `api_zbutton_gpio.js` in your `init.js` file.
+**C/C++ sample code**
+```c
+#include "mgos.h"
+#include "mgos_zbutton_gpio.h"
+
+enum mgos_app_init_result mgos_app_init(void) {
+  /* Create button using defualt configuration. */
+  struct mgos_zbutton_cfg cfg = MGOS_ZBUTTON_CFG;
+  struct mgos_zbutton *btn1 = mgos_zbutton_create("btn1", &cfg);
+  
+  if (btn1) {
+    /* Attach button to GPIO 14. */
+    struct mgos_zbutton_gpio_cfg gpio_cfg = MGOS_ZBUTTON_GPIO_CFG;  
+    if (mgos_zbutton_gpio_attach(btn1, 14, &gpio_cfg)) {
+      return MGOS_APP_INIT_SUCCESS;
+    }
+    mgos_zbutton_close(btn1);
+  }
+  return MGOS_APP_INIT_ERROR;
+}
+```
+**JavaScript sample code**
+
 ```js
-load('api_zbutton_gpio.js');
+load("api_zbutton_gpio.js")
+
+/* Create button using defualt configuration. */
+let btn1 = ZenButton.create('btn1');
+
+if (btn1) {
+  /* Attach button to GPIO 14. */
+  if (!btn1.GPIO.attach(14)) {
+    btn1.close();
+  }
+}
 ```
 ## C/C++ API Reference
 ### mgos_zbutton_gpio_cfg
@@ -40,11 +67,6 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |handle|Button handle.|
 |pin|GPIO pin.|
 |cfg|Optional. GPIO configuration. If `NULL`, default configuration values are used.|
-
-**Example** - Create a button using default configuration values and attach it to the GPIO 14.
-```c
-struct mgos_button *btn = mgos_button_create("btn-1", NULL);
-mgos_zbutton_gpio_attach(btn, 14, NULL);
 ```
 ### mgos_zbutton_gpio_detach()
 ```c
@@ -70,18 +92,12 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 **GPIO configuration properties**
 ```js
 {
-  activeHigh: true  //default
+  activeHigh: true
 }
 ```
 |Property|Type||
 |--|--|--|
 |activeHigh|boolean|Optional. Set to `true` if the GPIO input is high (1) when the button is pressed. Default value `true`.|
-
-**Example** - Create a button using default configuration values and attach it to the GPIO 14.
-```js
-let btn = ZenButton.create('btn-1');
-let success = btn.GPIO.attach(14);
-```
 ### .GPIO.detach()
 ```js
 let success = btn.GPIO.detach();
@@ -93,3 +109,4 @@ Take a look to some other samples or libraries.
 |Reference|Type||
 |--|--|--|
 |[zbutton-mqtt](https://github.com/zendiy-mgos/zbutton-mqtt)|Library|Mongoose-OS library for publishing ZenButtons events as MQTT messages.|
+|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Demo|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
