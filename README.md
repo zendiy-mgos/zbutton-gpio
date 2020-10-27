@@ -86,7 +86,7 @@ Attaches the button to the GPIO. Returns `true` on success, `false` otherwise.
 |Parameter|Type||
 |--|--|--|
 |pin|numeric|GPIO pin.|
-|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used. For more details, see 'GPIO configuration properties' section below.<br><br>{<br>&nbsp;&nbsp;activeHigh: true<br>}|
+|cfg|object|Optional. GPIO configuration. If missing, default configuration values are used. For more details, see 'GPIO configuration properties' section below.<br><br>{&nbsp;activeHigh: true&nbsp;}|
 
 **GPIO configuration properties**
 |Property|Type||
