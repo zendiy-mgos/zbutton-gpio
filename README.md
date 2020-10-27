@@ -56,6 +56,12 @@ GPIO configuration settings (e.g.: used by `mgos_zbutton_gpio_attach()`).
 |Field||
 |--|--|
 |active_high|Set to `true` if the GPIO input is high (1) when the button is pressed.|
+
+**Example** - Create and initialize configuration settings.
+```c
+// create and initialize cfg using defaults
+struct mgos_zbutton_gpio_cfg cfg = MGOS_ZBUTTON_GPIO_CFG;
+```
 ### mgos_zbutton_gpio_attach()
 ```c
 bool mgos_zbutton_gpio_attach(struct mgos_zbutton *handle, int pin, struct mgos_zbutton_gpio_cfg *cfg);
