@@ -2,8 +2,7 @@
 ## Overview
 Mongoose-OS library for attaching a [ZenButton](https://github.com/zendiy-mgos/zbutton) to gpio-based pushbutton.
 ## GET STARTED
-Build up your own device in few minutes just starting from the following sample.
-Include the library into your `mos.yml` file.
+Build up your own device in few minutes just starting from the following sample. Start including following libraries into your `mos.yml` file.
 ```yaml
 libs:
   - origin: https://github.com/zendiy-mgos/zbutton-gpio
